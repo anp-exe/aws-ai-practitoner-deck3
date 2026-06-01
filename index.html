@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS AI Practitioner, final deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f2ea;
+      --bg-card: #fffbf3;
+      --bg-card-back: #f1ebe0;
+      --ink: #2a2520;
+      --ink-soft: #6b5f52;
+      --ink-faint: #a89c8e;
+      --line: #e4dccd;
+      --sage: #c8d4be;
+      --blush: #ecc8c0;
+      --butter: #f0d99c;
+      --lilac: #d4cce0;
+      --sky: #bfd3dc;
+      --rose: #c97a6e;
+      --shadow: 0 1px 0 rgba(42,37,32,0.04), 0 2px 8px rgba(42,37,32,0.05);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 2rem 1.25rem 6rem;
+      font-feature-settings: 'ss01', 'ss02';
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    .header { text-align: center; margin: 2rem 0 3rem; }
+    .header .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .header .eyebrow span { color: var(--ink); }
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+    h1 .italic { font-style: italic; font-weight: 300; color: var(--ink-soft); }
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      font-style: italic;
+      max-width: 38rem;
+      margin: 0 auto;
+    }
+    .subtitle .heart { color: var(--rose); font-style: normal; }
+
+    .meta-row {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+    }
+    .meta-row span strong { color: var(--ink); font-weight: 500; }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 2rem 0 1rem;
+    }
+    .pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: lowercase;
+      padding: 0.45rem 0.95rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg-card);
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .pill:hover { border-color: var(--ink); color: var(--ink); }
+    .pill.active {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    .action-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: lowercase;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border-radius: 2px;
+    }
+    .action-btn:hover { background: var(--ink); color: var(--bg); }
+    .action-btn .arr { font-style: italic; font-family: 'Fraunces', serif; }
+
+    .section-marker {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin: 3.5rem 0 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .section-marker.hidden { display: none; }
+    .section-marker .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+    }
+    .section-marker h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: 1.8rem;
+      letter-spacing: -0.01em;
+    }
+    .section-marker .count {
+      margin-left: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+      text-transform: lowercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      perspective: 1400px;
+      cursor: pointer;
+      height: 380px;
+    }
+    .card.hidden { display: none; }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.65s cubic-bezier(0.4, 0.0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .card.flipped .card-inner { transform: rotateY(180deg); }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 6px;
+      padding: 1.25rem 1.25rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .card-front {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .card-back {
+      background: var(--bg-card-back);
+      border: 1px solid var(--line);
+      transform: rotateY(180deg);
+      overflow-y: auto;
+    }
+
+    .card-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+      text-transform: lowercase;
+      margin-bottom: 0.5rem;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.85rem; }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      padding: 0.18rem 0.5rem;
+      border-radius: 2px;
+      color: var(--ink);
+    }
+    .tag.sage { background: var(--sage); }
+    .tag.blush { background: var(--blush); }
+    .tag.butter { background: var(--butter); }
+    .tag.lilac { background: var(--lilac); }
+    .tag.sky { background: var(--sky); }
+    .tag.ink { background: var(--ink); color: var(--bg); }
+    .tag.rose { background: var(--rose); color: var(--bg); }
+
+    .preview {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.5rem 0;
+    }
+    .preview svg { max-width: 100%; max-height: 130px; }
+
+    .card-front h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.35rem;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.4rem;
+    }
+    .card-front .flip-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+      margin-top: auto;
+    }
+
+    .card-back h4 {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      letter-spacing: -0.01em;
+    }
+    .card-back p { font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.45; }
+    .card-back ul { padding-left: 1.1rem; margin: 0.4rem 0 0.6rem; font-size: 0.83rem; }
+    .card-back li { margin-bottom: 0.25rem; line-height: 1.4; }
+    .card-back .aside {
+      font-style: italic;
+      color: var(--ink-soft);
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dashed var(--line);
+    }
+    .card-back .aside strong { color: var(--ink); font-style: normal; }
+    .card-back strong { font-weight: 500; }
+    .card-back code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      background: rgba(42,37,32,0.06);
+      padding: 0.05rem 0.3rem;
+      border-radius: 2px;
+    }
+    .card-back table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76rem;
+      margin: 0.5rem 0;
+    }
+    .card-back th, .card-back td {
+      text-align: left;
+      padding: 0.3rem 0.35rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .card-back th {
+      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: lowercase;
+      color: var(--ink-soft);
+    }
+    .card-back .trap {
+      background: rgba(201,122,110,0.1);
+      border-left: 2px solid var(--rose);
+      padding: 0.5rem 0.7rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+      border-radius: 0 2px 2px 0;
+    }
+    .card-back .trap strong { color: #a45a4e; }
+    .card-back .lockdown {
+      background: rgba(107,142,90,0.12);
+      border-left: 2px solid #6b8e5a;
+      padding: 0.5rem 0.7rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+      border-radius: 0 2px 2px 0;
+    }
+    .card-back .lockdown strong { color: #4a6440; }
+
+    .card-back::-webkit-scrollbar { width: 4px; }
+    .card-back::-webkit-scrollbar-thumb { background: var(--ink-faint); border-radius: 2px; }
+    .card-back::-webkit-scrollbar-track { background: transparent; }
+
+    .footer {
+      text-align: center;
+      margin-top: 5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+      color: var(--ink-faint);
+      font-size: 0.8rem;
+      font-style: italic;
+    }
+    .footer .heart { color: var(--rose); font-style: normal; }
+
+    @media (max-width: 600px) {
+      body { padding: 1rem 0.75rem 4rem; }
+      .grid { grid-template-columns: 1fr; }
+      .card { height: 360px; }
+      .meta-row { gap: 1rem; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header class="header">
+    <div class="eyebrow">✦ final cram <span>·</span> the lockdown deck ✦</div>
+    <h1>aws AI Practitioner <span class="italic">final cram</span></h1>
+    <p class="subtitle">16 extra cards based on what I've been missing in exams<span class="heart">♡</span></p>
+    <div class="meta-row">
+      <span><strong id="total">16</strong> cards</span>
+      <span><strong>5</strong> sections</span>
+      <span>cards flipped <strong id="flipped-count">0</strong> / <strong id="flipped-total">16</strong></span>
+    </div>
+  </header>
+
+  <div class="filters" id="filters">
+    <button class="pill active" data-filter="all">all</button>
+    <button class="pill" data-filter="params">inference params</button>
+    <button class="pill" data-filter="bedrock">bedrock zoo</button>
+    <button class="pill" data-filter="arch">architectures</button>
+    <button class="pill" data-filter="services">service traps</button>
+    <button class="pill" data-filter="meta">exam meta</button>
+  </div>
+
+  <div class="actions">
+    <button class="action-btn" id="flip-all">flip all</button>
+    <button class="action-btn" id="reset">reset deck</button>
+    <button class="action-btn" id="shuffle">shuffle <span class="arr">✦</span></button>
+  </div>
+
+  <main id="deck">
+
+    <!-- ───────── § 01 inference parameters ───────── -->
+    <div class="section-marker" data-section="params">
+      <span class="num">§ 01</span>
+      <h2>inference parameters</h2>
+      <span class="count">3 cards</span>
+    </div>
+    <div class="grid">
+
+      <!-- card 01 -->
+      <div class="card" data-section="params">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">01params</div>
+            <div class="tags"><span class="tag rose">!! big trap</span><span class="tag butter">missed 2x</span></div>
+            <h3>Top K vs Top P</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <text x="50" y="18" font-family="JetBrains Mono" font-size="9" text-anchor="middle" fill="#6b5f52">top K</text>
+                <rect x="22" y="28" width="12" height="50" fill="#c8d4be"/>
+                <rect x="38" y="35" width="12" height="43" fill="#c8d4be"/>
+                <rect x="54" y="44" width="12" height="34" fill="#c8d4be"/>
+                <rect x="70" y="55" width="12" height="23" fill="#c8d4be"/>
+                <text x="50" y="92" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#6b5f52">count = 4</text>
+                <text x="160" y="18" font-family="JetBrains Mono" font-size="9" text-anchor="middle" fill="#6b5f52">top P</text>
+                <rect x="120" y="40" width="80" height="20" fill="none" stroke="#6b5f52" stroke-width="1"/>
+                <rect x="120" y="40" width="60" height="20" fill="#ecc8c0"/>
+                <text x="160" y="92" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#6b5f52">prob = 75%</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">01params</div>
+            <h4>Top K vs Top P, locked in</h4>
+            <table>
+              <tr><th></th><th>top K</th><th>top P</th></tr>
+              <tr><td><strong>unit</strong></td><td>integer count</td><td>percent / probability mass</td></tr>
+              <tr><td><strong>e.g.</strong></td><td>top 50 tokens</td><td>tokens summing to 0.9</td></tr>
+              <tr><td><strong>lower</strong></td><td>more focused</td><td>more focused</td></tr>
+            </table>
+            <div class="lockdown">
+              <strong>Mnemonic:</strong> K is for <strong>K</strong>ount (number). P is for <strong>P</strong>ercent (probability).
+            </div>
+            <p class="aside">Question keyword "<strong>number of candidates</strong>" or "<strong>most likely candidates</strong>" → Top K. Question keyword "<strong>percentage</strong>" or "<strong>probability</strong>" → Top P.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 02 -->
+      <div class="card" data-section="params">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">02params</div>
+            <div class="tags"><span class="tag sage">all 4 params</span><span class="tag sky">quick ref</span></div>
+            <h3>The 4 inference parameters</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="22" width="46" height="22" fill="#f0d99c" rx="2"/>
+                <text x="33" y="36" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">temp</text>
+                <rect x="62" y="22" width="46" height="22" fill="#c8d4be" rx="2"/>
+                <text x="85" y="36" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">top K</text>
+                <rect x="114" y="22" width="46" height="22" fill="#ecc8c0" rx="2"/>
+                <text x="137" y="36" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">top P</text>
+                <rect x="166" y="22" width="46" height="22" fill="#d4cce0" rx="2"/>
+                <text x="189" y="36" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">stop seq</text>
+                <text x="110" y="70" font-family="Fraunces" font-style="italic" font-size="9" text-anchor="middle" fill="#6b5f52">all control output behaviour</text>
+                <text x="110" y="85" font-family="Fraunces" font-style="italic" font-size="8" text-anchor="middle" fill="#a89c8e">none affect cost</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">02params</div>
+            <h4>The 4 Bedrock inference parameters</h4>
+            <table>
+              <tr><th>param</th><th>what it controls</th></tr>
+              <tr><td><strong>Temperature</strong></td><td>creativity / randomness, 0 to 1</td></tr>
+              <tr><td><strong>Top K</strong></td><td>NUMBER of candidate tokens</td></tr>
+              <tr><td><strong>Top P</strong></td><td>PERCENTAGE / probability mass</td></tr>
+              <tr><td><strong>Stop sequences</strong></td><td>characters that halt generation</td></tr>
+            </table>
+            <p class="aside">All 4 control how the model generates text. None of them affect cost (see card 03).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 03 -->
+      <div class="card" data-section="params">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">03params</div>
+            <div class="tags"><span class="tag rose">cost trap</span></div>
+            <h3>Reducing Bedrock cost</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <text x="60" y="22" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#6b5f52">input tokens</text>
+                <rect x="20" y="28" width="80" height="14" fill="#c8d4be"/>
+                <text x="60" y="60" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#6b5f52">output tokens</text>
+                <rect x="20" y="66" width="80" height="14" fill="#ecc8c0"/>
+                <text x="160" y="48" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#2a2520">= $</text>
+                <text x="160" y="64" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#6b5f52">that's it</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">03params</div>
+            <h4>Bedrock cost = tokens, only tokens</h4>
+            <p>Cost is billed <strong>per million tokens</strong>, separately for input and output. Output is usually more expensive.</p>
+            <div class="lockdown">
+              <strong>To reduce cost:</strong> fewer input tokens, fewer output tokens. That is the only lever.
+            </div>
+            <div class="trap">
+              <strong>Exam trap:</strong> Temperature, Top K, Top P, Stop sequences, batch size during training — NONE of these affect inference cost. They control behaviour, not billing.
+            </div>
+            <p class="aside">Strategies that DO reduce cost: shorter prompts, shorter responses (max tokens limit), prompt caching, batch inference (~50% discount).</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ───────── § 02 bedrock zoo ───────── -->
+    <div class="section-marker" data-section="bedrock">
+      <span class="num">§ 02</span>
+      <h2>bedrock feature zoo</h2>
+      <span class="count">6 cards</span>
+    </div>
+    <div class="grid">
+
+      <!-- card 04: Agents -->
+      <div class="card" data-section="bedrock">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">04bedrock</div>
+            <div class="tags"><span class="tag ink">actions</span><span class="tag butter">multi-step</span></div>
+            <h3>Agents</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="40" width="30" height="22" fill="#c8d4be" rx="2"/>
+                <text x="30" y="54" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">plan</text>
+                <text x="52" y="54" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#6b5f52">→</text>
+                <rect x="65" y="40" width="30" height="22" fill="#ecc8c0" rx="2"/>
+                <text x="80" y="54" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">API</text>
+                <text x="102" y="54" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#6b5f52">→</text>
+                <rect x="115" y="40" width="30" height="22" fill="#f0d99c" rx="2"/>
+                <text x="130" y="54" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">DB</text>
+                <text x="152" y="54" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#6b5f52">→</text>
+                <rect x="165" y="40" width="30" height="22" fill="#d4cce0" rx="2"/>
+                <text x="180" y="54" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">act</text>
+                <text x="110" y="85" font-family="Fraunces" font-style="italic" font-size="9" text-anchor="middle" fill="#6b5f52">orchestrated tool use</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">04bedrock</div>
+            <h4>Bedrock Agents</h4>
+            <p>Foundation models that <strong>take actions</strong>, not just generate text. They plan, call APIs, query databases, and complete multi-step tasks.</p>
+            <ul>
+              <li>Bedrock manages prompt engineering, memory, monitoring</li>
+              <li>You define the tools and APIs they can invoke</li>
+              <li>Common pattern: insurance claims, travel bookings, inventory monitoring + reorder recommendations</li>
+            </ul>
+            <div class="lockdown">
+              <strong>Question keywords:</strong> "automate", "monitor and recommend", "execute multi-step task", "complete actions" → <strong>Agents</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 05: Knowledge Bases -->
+      <div class="card" data-section="bedrock">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">05bedrock</div>
+            <div class="tags"><span class="tag sage">RAG</span><span class="tag lilac">private docs</span></div>
+            <h3>Knowledge Bases</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="30" width="30" height="40" fill="#ecc8c0" rx="2"/>
+                <line x1="22" y1="42" x2="38" y2="42" stroke="#2a2520" stroke-width="0.5"/>
+                <line x1="22" y1="50" x2="38" y2="50" stroke="#2a2520" stroke-width="0.5"/>
+                <line x1="22" y1="58" x2="38" y2="58" stroke="#2a2520" stroke-width="0.5"/>
+                <text x="30" y="82" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#6b5f52">your docs</text>
+                <text x="60" y="54" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#6b5f52">→</text>
+                <rect x="75" y="35" width="60" height="30" fill="#2a2520" rx="2"/>
+                <text x="105" y="54" font-family="Fraunces" font-style="italic" font-size="9" text-anchor="middle" fill="#f7f2ea">FM + ctx</text>
+                <text x="150" y="54" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#6b5f52">→</text>
+                <text x="180" y="56" font-family="Fraunces" font-style="italic" font-size="9" fill="#2a2520">answer</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">05bedrock</div>
+            <h4>Bedrock Knowledge Bases</h4>
+            <p>Fully managed <strong>RAG</strong>. The FM answers using context retrieved from your private documents.</p>
+            <ul>
+              <li>You connect a data source (S3, web crawler, Confluence, SharePoint)</li>
+              <li>Bedrock handles chunking, embeddings, vector storage, retrieval</li>
+              <li>Used when answers must come from YOUR data, not the model's training</li>
+            </ul>
+            <div class="lockdown">
+              <strong>Question keywords:</strong> "answer from internal docs", "contextual info from company data", "ground in private knowledge" → <strong>Knowledge Bases</strong>.
+            </div>
+            <p class="aside">Knowledge Bases retrieves info; Agents take actions. If the question is about both (retrieve and then DO something), it's Agents (Agents can use KBs internally).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 06: Guardrails -->
+      <div class="card" data-section="bedrock">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">06bedrock</div>
+            <div class="tags"><span class="tag rose">safety</span><span class="tag butter">PII</span></div>
+            <h3>Guardrails</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="35" width="60" height="30" fill="#2a2520" rx="2"/>
+                <text x="45" y="54" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#f7f2ea">FM</text>
+                <line x1="85" y1="25" x2="85" y2="75" stroke="#c97a6e" stroke-width="2" stroke-dasharray="3,2"/>
+                <text x="120" y="36" font-family="JetBrains Mono" font-size="6" fill="#c97a6e">⚠ filtered</text>
+                <text x="120" y="48" font-family="JetBrains Mono" font-size="6" fill="#6b5f52">PII redacted</text>
+                <text x="120" y="60" font-family="JetBrains Mono" font-size="6" fill="#6b5f52">topics blocked</text>
+                <text x="120" y="72" font-family="JetBrains Mono" font-size="6" fill="#6b5f52">grounding checked</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">06bedrock</div>
+            <h4>Bedrock Guardrails</h4>
+            <p>Safety policies enforced on prompts AND responses. Five filter types:</p>
+            <ul>
+              <li><strong>Content filters</strong>: hate, violence, sexual, misconduct</li>
+              <li><strong>Denied topics</strong>: custom topics you specify in natural language</li>
+              <li><strong>Sensitive information filters</strong>: PII (block or mask), custom regex</li>
+              <li><strong>Word filters</strong>: explicit blocklist</li>
+              <li><strong>Contextual grounding checks</strong>: detect hallucinations vs source docs</li>
+            </ul>
+            <div class="lockdown">
+              <strong>Question keywords:</strong> "block harmful content", "redact PII", "responsible AI policy" → <strong>Guardrails</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 07: Model Invocation Logging -->
+      <div class="card" data-section="bedrock">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">07bedrock</div>
+            <div class="tags"><span class="tag sky">audit</span><span class="tag rose">missed!</span></div>
+            <h3>Model Invocation Logging</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="38" width="50" height="22" fill="#c8d4be" rx="2"/>
+                <text x="40" y="52" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">request</text>
+                <rect x="80" y="38" width="50" height="22" fill="#2a2520" rx="2"/>
+                <text x="105" y="52" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#f7f2ea">FM</text>
+                <rect x="145" y="38" width="50" height="22" fill="#ecc8c0" rx="2"/>
+                <text x="170" y="52" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">response</text>
+                <line x1="40" y1="60" x2="40" y2="78" stroke="#6b5f52" stroke-width="0.5" stroke-dasharray="2,2"/>
+                <line x1="170" y1="60" x2="170" y2="78" stroke="#6b5f52" stroke-width="0.5" stroke-dasharray="2,2"/>
+                <rect x="15" y="78" width="180" height="14" fill="#d4cce0" rx="1"/>
+                <text x="105" y="88" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">→ CloudWatch / S3</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">07bedrock</div>
+            <h4>Model Invocation Logging</h4>
+            <p>Captures the <strong>full request and response data</strong> for every Bedrock model invocation, including input prompts, output text, and metadata.</p>
+            <ul>
+              <li>Destinations: CloudWatch Logs or S3</li>
+              <li><strong>Disabled by default</strong>, must be enabled per account/region</li>
+              <li>Used for audit, compliance, troubleshooting</li>
+            </ul>
+            <div class="trap">
+              <strong>Don't confuse with:</strong><br>
+              <strong>CloudTrail</strong> = logs API calls (who called what), NOT input/output data<br>
+              <strong>EventBridge</strong> = triggers reactions to events, not detailed logs<br>
+              <strong>AWS Config</strong> = monitors resource configurations, not data
+            </div>
+            <p class="aside"><strong>Question keyword:</strong> "monitor input and output data", "audit prompts and responses" → <strong>Model Invocation Logging</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 08: Provisioned Throughput -->
+      <div class="card" data-section="bedrock">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">08bedrock</div>
+            <div class="tags"><span class="tag butter">fine-tuning</span><span class="tag ink">required</span></div>
+            <h3>Provisioned Throughput</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="30" width="80" height="45" fill="none" stroke="#2a2520" stroke-width="1" rx="3"/>
+                <text x="60" y="22" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#6b5f52">on-demand</text>
+                <text x="60" y="55" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#a89c8e">pay per use</text>
+                <text x="60" y="86" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#c97a6e">✗ no custom models</text>
+                <rect x="120" y="30" width="80" height="45" fill="#c8d4be" rx="3"/>
+                <text x="160" y="22" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#6b5f52">provisioned</text>
+                <text x="160" y="55" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#2a2520">reserved cap.</text>
+                <text x="160" y="86" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#4a6440">✓ custom models</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">08bedrock</div>
+            <h4>Provisioned Throughput</h4>
+            <p>Reserves dedicated model capacity for guaranteed throughput and latency.</p>
+            <div class="lockdown">
+              <strong>Critical exam fact:</strong> Provisioned Throughput is <strong>REQUIRED</strong> to deploy and use a fine-tuned or continued-pre-trained custom model in Bedrock. On-Demand mode does NOT support custom models.
+            </div>
+            <p>Also useful when:</p>
+            <ul>
+              <li>High-traffic production needs predictable performance</li>
+              <li>You hit throttling under default on-demand limits</li>
+            </ul>
+            <p class="aside"><strong>Question keywords:</strong> "deploy fine-tuned model", "guaranteed throughput for production", "reserved capacity" → <strong>Provisioned Throughput</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 09: Playground -->
+      <div class="card" data-section="bedrock">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">09bedrock</div>
+            <div class="tags"><span class="tag lilac">experiment</span><span class="tag rose">!! distractor</span></div>
+            <h3>Playground</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="25" width="180" height="55" fill="#fffbf3" stroke="#2a2520" stroke-width="1" rx="3"/>
+                <rect x="30" y="33" width="120" height="6" fill="#e4dccd"/>
+                <rect x="30" y="44" width="90" height="6" fill="#e4dccd"/>
+                <rect x="30" y="55" width="100" height="6" fill="#e4dccd"/>
+                <rect x="160" y="62" width="32" height="12" fill="#ecc8c0" rx="2"/>
+                <text x="176" y="71" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">test</text>
+                <text x="110" y="92" font-family="Fraunces" font-style="italic" font-size="8" text-anchor="middle" fill="#a89c8e">just for experimentation</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">09bedrock</div>
+            <h4>Bedrock Playground</h4>
+            <p>Console environment to <strong>test prompts and inference parameters</strong> on different models before building an app.</p>
+            <ul>
+              <li>Text playground, chat playground, image playground</li>
+              <li>No code required</li>
+              <li>Used for prompt engineering experimentation</li>
+            </ul>
+            <div class="trap">
+              <strong>Common distractor:</strong> Playground CANNOT fine-tune models. It CANNOT deploy models to production. If a question is about fine-tuning, deployment, or running real workloads, Playground is wrong.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ───────── § 03 architectures ───────── -->
+    <div class="section-marker" data-section="arch">
+      <span class="num">§ 03</span>
+      <h2>generative architectures</h2>
+      <span class="count">2 cards</span>
+    </div>
+    <div class="grid">
+
+      <!-- card 10: Transformers -->
+      <div class="card" data-section="arch">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">10arch</div>
+            <div class="tags"><span class="tag ink">LLMs</span><span class="tag butter">self-attention</span></div>
+            <h3>Transformers</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="50" r="9" fill="#c8d4be"/>
+                <circle cx="80" cy="50" r="9" fill="#c8d4be"/>
+                <circle cx="120" cy="50" r="9" fill="#c8d4be"/>
+                <circle cx="160" cy="50" r="9" fill="#c8d4be"/>
+                <circle cx="200" cy="50" r="9" fill="#c8d4be"/>
+                <line x1="40" y1="50" x2="80" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="40" y1="50" x2="120" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="40" y1="50" x2="160" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="40" y1="50" x2="200" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="80" y1="50" x2="120" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="80" y1="50" x2="160" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="80" y1="50" x2="200" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="120" y1="50" x2="160" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="120" y1="50" x2="200" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <line x1="160" y1="50" x2="200" y2="50" stroke="#6b5f52" stroke-width="0.5"/>
+                <text x="120" y="90" font-family="Fraunces" font-style="italic" font-size="9" text-anchor="middle" fill="#6b5f52">all tokens attend to all tokens</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">10arch</div>
+            <h4>Transformer models</h4>
+            <p>The architecture that powers modern LLMs (Claude, GPT, Llama).</p>
+            <ul>
+              <li><strong>Self-attention mechanism</strong>: weighs the importance of every token relative to every other token</li>
+              <li><strong>Contextual embeddings</strong>: each word's representation depends on its context</li>
+              <li>Positional encodings handle word order</li>
+              <li>Encoder-decoder structure for sequence tasks</li>
+            </ul>
+            <div class="lockdown">
+              <strong>Exam phrase:</strong> "<strong>self-attention</strong>" + "<strong>contextual embeddings</strong>" → Transformer. Always.
+            </div>
+            <p class="aside">Used for: language translation, summarisation, text generation, chat. Everything LLM is built on transformers.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 11: GAN vs VAE vs Diffusion -->
+      <div class="card" data-section="arch">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">11arch</div>
+            <div class="tags"><span class="tag sage">the other 3</span><span class="tag sky">quick ref</span></div>
+            <h3>GAN, VAE, Diffusion</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <text x="35" y="25" font-family="JetBrains Mono" font-size="8" text-anchor="middle" fill="#6b5f52">GAN</text>
+                <circle cx="25" cy="50" r="10" fill="#c8d4be"/>
+                <circle cx="45" cy="50" r="10" fill="#ecc8c0"/>
+                <text x="35" y="78" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#a89c8e">vs</text>
+                <text x="110" y="25" font-family="JetBrains Mono" font-size="8" text-anchor="middle" fill="#6b5f52">VAE</text>
+                <rect x="90" y="42" width="14" height="16" fill="#f0d99c"/>
+                <text x="113" y="54" font-family="Fraunces" font-style="italic" font-size="10" fill="#6b5f52">→</text>
+                <ellipse cx="135" cy="50" rx="6" ry="8" fill="#d4cce0"/>
+                <text x="185" y="25" font-family="JetBrains Mono" font-size="8" text-anchor="middle" fill="#6b5f52">Diffusion</text>
+                <circle cx="170" cy="50" r="8" fill="#a89c8e"/>
+                <text x="185" y="54" font-family="Fraunces" font-style="italic" font-size="10" fill="#6b5f52">→</text>
+                <rect x="195" y="42" width="14" height="14" fill="#bfd3dc"/>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">11arch</div>
+            <h4>The not-Transformer family</h4>
+            <table>
+              <tr><th>type</th><th>mechanism</th><th>famous use</th></tr>
+              <tr><td><strong>GAN</strong></td><td>two networks competing (generator vs discriminator)</td><td>deepfakes, image gen</td></tr>
+              <tr><td><strong>VAE</strong></td><td>compact latent space, encoder/decoder</td><td>image gen, data compression</td></tr>
+              <tr><td><strong>Diffusion</strong></td><td>add noise then learn to denoise</td><td>Stable Diffusion, DALL-E</td></tr>
+            </table>
+            <div class="lockdown">
+              <strong>Trigger phrases:</strong><br>
+              "two networks competing" → <strong>GAN</strong><br>
+              "latent space" / "encoder + decoder" → <strong>VAE</strong><br>
+              "noise → denoise" / "diffusion process" → <strong>Diffusion</strong><br>
+              "self-attention" → <strong>Transformer</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ───────── § 04 service traps ───────── -->
+    <div class="section-marker" data-section="services">
+      <span class="num">§ 04</span>
+      <h2>service traps</h2>
+      <span class="count">3 cards</span>
+    </div>
+    <div class="grid">
+
+      <!-- card 12: SageMaker inference types -->
+      <div class="card" data-section="services">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">12services</div>
+            <div class="tags"><span class="tag rose">!! big trap</span><span class="tag butter">corrected!</span></div>
+            <h3>SageMaker inference</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="20" width="48" height="22" fill="#c8d4be" rx="2"/>
+                <text x="34" y="32" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">real-time</text>
+                <text x="34" y="39" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">25MB / 60s</text>
+                <rect x="62" y="20" width="48" height="22" fill="#ecc8c0" rx="2"/>
+                <text x="86" y="32" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">async</text>
+                <text x="86" y="39" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">1GB / 1hr</text>
+                <rect x="114" y="20" width="48" height="22" fill="#f0d99c" rx="2"/>
+                <text x="138" y="32" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">batch</text>
+                <text x="138" y="39" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">GBs / days</text>
+                <rect x="166" y="20" width="48" height="22" fill="#d4cce0" rx="2"/>
+                <text x="190" y="32" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#2a2520">serverless</text>
+                <text x="190" y="39" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">4MB / 60s</text>
+                <text x="110" y="78" font-family="Fraunces" font-style="italic" font-size="9" text-anchor="middle" fill="#6b5f52">match payload + latency need</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">12services</div>
+            <h4>SageMaker inference types (CORRECTED LIMITS)</h4>
+            <table>
+              <tr><th>type</th><th>payload</th><th>timeout</th><th>use case</th></tr>
+              <tr><td><strong>Real-time</strong></td><td>25 MB</td><td>60s (8min stream)</td><td>persistent endpoint, sustained traffic</td></tr>
+              <tr><td><strong>Async</strong></td><td>1 GB</td><td>1 hour</td><td>large payload, near real-time</td></tr>
+              <tr><td><strong>Batch</strong></td><td>GBs+</td><td>days</td><td>bulk offline, no latency need</td></tr>
+              <tr><td><strong>Serverless</strong></td><td>4 MB</td><td>60s</td><td>sporadic traffic, scale to zero</td></tr>
+            </table>
+            <div class="lockdown">
+              <strong>Decision tree:</strong><br>
+              Sustained low-latency traffic → Real-time<br>
+              Large payload OR &gt;60s processing → Async<br>
+              Huge dataset, no urgency → Batch<br>
+              Sporadic traffic, want zero idle cost → Serverless
+            </div>
+            <p class="aside"><strong>Note:</strong> Real-time was previously limited to 6 MB; AWS raised it to 25 MB. Async (1 GB / 1 hr) is unchanged.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 13: JumpStart vs Canvas vs Bedrock -->
+      <div class="card" data-section="services">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">13services</div>
+            <div class="tags"><span class="tag sage">service zoo</span><span class="tag butter">common trap</span></div>
+            <h3>JumpStart vs Canvas vs Bedrock</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="30" width="60" height="40" fill="#ecc8c0" rx="3"/>
+                <text x="40" y="48" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#2a2520">JumpStart</text>
+                <text x="40" y="60" font-family="Fraunces" font-style="italic" font-size="7" text-anchor="middle" fill="#6b5f52">FM hub</text>
+                <rect x="80" y="30" width="60" height="40" fill="#c8d4be" rx="3"/>
+                <text x="110" y="48" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#2a2520">Canvas</text>
+                <text x="110" y="60" font-family="Fraunces" font-style="italic" font-size="7" text-anchor="middle" fill="#6b5f52">no-code UI</text>
+                <rect x="150" y="30" width="60" height="40" fill="#d4cce0" rx="3"/>
+                <text x="180" y="48" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#2a2520">Bedrock</text>
+                <text x="180" y="60" font-family="Fraunces" font-style="italic" font-size="7" text-anchor="middle" fill="#6b5f52">FM API</text>
+                <text x="110" y="88" font-family="Fraunces" font-style="italic" font-size="8" text-anchor="middle" fill="#a89c8e">different audiences, different jobs</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">13services</div>
+            <h4>JumpStart vs Canvas vs Bedrock</h4>
+            <table>
+              <tr><th></th><th>what</th><th>audience</th></tr>
+              <tr><td><strong>JumpStart</strong></td><td>ML hub: FMs, built-in algorithms, prebuilt solutions; customisable</td><td>developers</td></tr>
+              <tr><td><strong>Canvas</strong></td><td>no-code visual UI; AutoML; can also chat with LLMs</td><td>business analysts</td></tr>
+              <tr><td><strong>Bedrock</strong></td><td>serverless API for FMs from many providers; build apps</td><td>developers</td></tr>
+            </table>
+            <div class="lockdown">
+              <strong>Lock these architectural facts in:</strong><br>
+              Amazon <strong>Q Developer is powered by Bedrock</strong> (not JumpStart, not SageMaker)<br>
+              JumpStart supports BOTH public AND proprietary models<br>
+              Canvas has built-in FM chat (using Bedrock and JumpStart models under the hood)<br>
+              Your training/inference data is NOT used to retrain JumpStart base models
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 14: document classification quirk -->
+      <div class="card" data-section="services">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">14services</div>
+            <div class="tags"><span class="tag rose">AWS quirk</span><span class="tag butter">!! exam trap</span></div>
+            <h3>Document classification</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="35" width="20" height="26" fill="#ecc8c0"/>
+                <rect x="45" y="35" width="20" height="26" fill="#c8d4be"/>
+                <rect x="70" y="35" width="20" height="26" fill="#a89c8e" opacity="0.4"/>
+                <rect x="95" y="35" width="20" height="26" fill="#a89c8e" opacity="0.4"/>
+                <rect x="120" y="35" width="20" height="26" fill="#a89c8e" opacity="0.4"/>
+                <rect x="145" y="35" width="20" height="26" fill="#a89c8e" opacity="0.4"/>
+                <rect x="170" y="35" width="20" height="26" fill="#a89c8e" opacity="0.4"/>
+                <text x="40" y="78" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#6b5f52">labeled</text>
+                <text x="145" y="78" font-family="JetBrains Mono" font-size="6" text-anchor="middle" fill="#6b5f52">unlabeled (many)</text>
+                <text x="105" y="92" font-family="Fraunces" font-style="italic" font-size="8" text-anchor="middle" fill="#a89c8e">= semi-supervised, says AWS</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">14services</div>
+            <h4>AWS classifies it as SEMI-supervised</h4>
+            <p>In general ML textbooks, document classification is supervised. <strong>AWS docs frame it as semi-supervised</strong> because real-world document collections are too large to fully label, so the typical approach uses a small labeled set + a large unlabeled set.</p>
+            <div class="lockdown">
+              <strong>AWS examples by category:</strong><br>
+              <strong>Supervised:</strong> linear regression, neural networks, classification with labeled data<br>
+              <strong>Unsupervised:</strong> clustering (k-means), association rule learning (Apriori)<br>
+              <strong>Semi-supervised:</strong> document classification on large doc bases<br>
+              <strong>Reinforcement:</strong> agent + reward signal
+            </div>
+            <p class="aside">When in doubt on these "which learning type" questions, trust AWS's specific framing over your general ML intuition. The exam follows AWS docs.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ───────── § 05 exam meta ───────── -->
+    <div class="section-marker" data-section="meta">
+      <span class="num">§ 05</span>
+      <h2>exam meta-rules</h2>
+      <span class="count">2 cards</span>
+    </div>
+    <div class="grid">
+
+      <!-- card 15: most effective rule -->
+      <div class="card" data-section="meta">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">15meta</div>
+            <div class="tags"><span class="tag ink">meta-rule</span></div>
+            <h3>"MOST effective" rule</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <text x="110" y="25" font-family="Fraunces" font-style="italic" font-size="11" text-anchor="middle" fill="#2a2520">two right answers?</text>
+                <rect x="20" y="40" width="80" height="30" fill="#c8d4be" rx="2"/>
+                <text x="60" y="58" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#2a2520">direct</text>
+                <rect x="120" y="40" width="80" height="30" fill="#f0d99c" opacity="0.5" rx="2"/>
+                <text x="160" y="58" font-family="JetBrains Mono" font-size="7" text-anchor="middle" fill="#2a2520">indirect</text>
+                <text x="60" y="88" font-family="Fraunces" font-style="italic" font-size="8" text-anchor="middle" fill="#4a6440">✓ this one</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">15meta</div>
+            <h4>"MOST effective" / "BEST" exam rule</h4>
+            <p>When two answers are both technically correct, pick the one that <strong>most directly and precisely targets the stated problem</strong>.</p>
+            <p>Trigger phrases that activate this rule:</p>
+            <ul>
+              <li>"MOST effective"</li>
+              <li>"BEST approach"</li>
+              <li>"PRIMARY"</li>
+              <li>"MOST suitable"</li>
+              <li>"MOST appropriate"</li>
+            </ul>
+            <div class="lockdown">
+              <strong>Worked example:</strong> Model is overfitting. "Add more training data" and "Hyperparameter tuning (regularization, dropout)" are BOTH valid fixes. But hyperparameter tuning is the <strong>direct</strong> intervention for overfitting; more data is <strong>indirect</strong> and depends on data quality. Answer: hyperparameter tuning.
+            </div>
+            <p class="aside">Also: questions with this phrasing often have a "MOST cost-effective" variant. The rule applies the same way: pick the option that maps most precisely to the cost goal.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 16: the bedrock decision flowchart -->
+      <div class="card" data-section="meta">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-id">16meta</div>
+            <div class="tags"><span class="tag ink">flowchart</span><span class="tag butter">finale ✦</span></div>
+            <h3>Bedrock feature flowchart</h3>
+            <div class="preview">
+              <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                <text x="110" y="18" font-family="Fraunces" font-style="italic" font-size="10" text-anchor="middle" fill="#2a2520">what do you need?</text>
+                <rect x="10" y="30" width="32" height="14" fill="#c8d4be" rx="2"/>
+                <text x="26" y="40" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#2a2520">actions</text>
+                <rect x="48" y="30" width="32" height="14" fill="#ecc8c0" rx="2"/>
+                <text x="64" y="40" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#2a2520">RAG</text>
+                <rect x="86" y="30" width="32" height="14" fill="#f0d99c" rx="2"/>
+                <text x="102" y="40" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#2a2520">PII/safety</text>
+                <rect x="124" y="30" width="32" height="14" fill="#d4cce0" rx="2"/>
+                <text x="140" y="40" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#2a2520">audit i/o</text>
+                <rect x="162" y="30" width="32" height="14" fill="#bfd3dc" rx="2"/>
+                <text x="178" y="40" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#2a2520">FT deploy</text>
+                <text x="26" y="58" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">Agents</text>
+                <text x="64" y="58" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">KB</text>
+                <text x="102" y="58" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">Guardrl</text>
+                <text x="140" y="58" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">MIL</text>
+                <text x="178" y="58" font-family="JetBrains Mono" font-size="5" text-anchor="middle" fill="#6b5f52">PT</text>
+                <text x="110" y="88" font-family="Fraunces" font-style="italic" font-size="8" text-anchor="middle" fill="#a89c8e">the lockdown table ♡</text>
+              </svg>
+            </div>
+            <div class="flip-hint">tap to flip ✦</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-id">16meta</div>
+            <h4>Bedrock feature decision table</h4>
+            <table>
+              <tr><th>need</th><th>feature</th></tr>
+              <tr><td>Multi-step actions, call APIs/DBs</td><td><strong>Agents</strong></td></tr>
+              <tr><td>Answer from private docs (RAG)</td><td><strong>Knowledge Bases</strong></td></tr>
+              <tr><td>Block PII, harmful content, denied topics</td><td><strong>Guardrails</strong></td></tr>
+              <tr><td>Capture full input/output data for audit</td><td><strong>Model Invocation Logging</strong></td></tr>
+              <tr><td>Deploy a fine-tuned/custom model</td><td><strong>Provisioned Throughput</strong></td></tr>
+              <tr><td>Just test prompts, experiment</td><td><strong>Playground</strong></td></tr>
+              <tr><td>Generate watermarked image, detect AI images</td><td><strong>Watermark detection</strong> (Titan only)</td></tr>
+            </table>
+            <p class="aside">If you can recite this table cold on exam day, you've got the Bedrock section locked. That's the finish line. ✦</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>final cram <span class="heart">♡</span> drilled from my actual practice exam misses <span class="heart">♡</span> </p>
+    <p style="margin-top:0.5rem;">tap any card to flip · shuffle for spaced retrieval practice</p>
+  </footer>
+</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const cards = Array.from(document.querySelectorAll('.card'));
+  const sectionMarkers = Array.from(document.querySelectorAll('.section-marker'));
+  const filterPills = document.querySelectorAll('.pill');
+  const flippedCountEl = document.getElementById('flipped-count');
+  const flippedTotalEl = document.getElementById('flipped-total');
+
+  document.getElementById('total').textContent = cards.length;
+  flippedTotalEl.textContent = cards.length;
+
+  function updateFlippedCount() {
+    const visibleFlipped = cards.filter(c => !c.classList.contains('hidden') && c.classList.contains('flipped')).length;
+    flippedCountEl.textContent = visibleFlipped;
+  }
+
+  function updateVisibleTotal() {
+    const visible = cards.filter(c => !c.classList.contains('hidden')).length;
+    flippedTotalEl.textContent = visible;
+  }
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+      updateFlippedCount();
+    });
+  });
+
+  filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      filterPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const filter = pill.dataset.filter;
+
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.section === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      sectionMarkers.forEach(marker => {
+        if (filter === 'all' || marker.dataset.section === filter) {
+          marker.classList.remove('hidden');
+        } else {
+          marker.classList.add('hidden');
+        }
+      });
+
+      document.querySelectorAll('.grid').forEach(grid => {
+        const visibleCards = grid.querySelectorAll('.card:not(.hidden)').length;
+        grid.style.display = visibleCards === 0 ? 'none' : 'grid';
+      });
+
+      updateVisibleTotal();
+      updateFlippedCount();
+    });
+  });
+
+  document.getElementById('flip-all').addEventListener('click', () => {
+    const visible = cards.filter(c => !c.classList.contains('hidden'));
+    const allFlipped = visible.every(c => c.classList.contains('flipped'));
+    visible.forEach(c => {
+      if (allFlipped) c.classList.remove('flipped');
+      else c.classList.add('flipped');
+    });
+    updateFlippedCount();
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    cards.forEach(c => c.classList.remove('flipped'));
+    updateFlippedCount();
+  });
+
+  document.getElementById('shuffle').addEventListener('click', () => {
+    document.querySelectorAll('.grid').forEach(grid => {
+      const gridCards = Array.from(grid.children).filter(el => el.classList.contains('card'));
+      for (let i = gridCards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [gridCards[i], gridCards[j]] = [gridCards[j], gridCards[i]];
+      }
+      gridCards.forEach(c => grid.appendChild(c));
+    });
+  });
+</script>
+</body>
+</html>
